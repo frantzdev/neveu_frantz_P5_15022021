@@ -45,7 +45,7 @@ function displayItems(response) {
 
 
 // essai animation sur titre
-const monTitre = document.getElementById("monTitre");
+const monTitre = document.getElementById("title");
 
 monTitre.addEventListener("click", (event) => {
     monTitre.animate([

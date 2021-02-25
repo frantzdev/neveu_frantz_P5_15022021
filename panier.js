@@ -105,7 +105,6 @@ boutonValidationPanier.setAttribute("value", "valider votre commande");
 
 
 titrePanier.innerHTML = "PANIER"
-prixTotalPanier.innerHTML = prixUnitairePanier * quantitePanier
 formulaireTitre.innerHTML = "Formulaire de commande"
 labelFirstName.innerHTML = "Prenom"
 firstName.value = "jean";
@@ -123,13 +122,24 @@ const afficherNom = () => {
     let quantiteStorage = localStorage.getItem("quantite");
     quantitePanier.innerHTML = "Quantité : " + quantiteStorage;
     let prixStorage = localStorage.getItem("prix");
-    prixUnitairePanier.innerHTML = "Prix unitaire : " + prixStorage;
+    prixUnitairePanier.innerHTML = "Prix unitaire : " + prixStorage /100 + ",00 €";
     let nameStorage = localStorage.getItem("titre");
     namePanier.innerHTML = nameStorage;
     let idStorage = localStorage.getItem("identifiant");
     identifiantPanier.innerHTML = "Numero d'article : " + idStorage;
-    let imageStorage = localStorage.getItem("images");
-    imagePanier.innerHTML = imageStorage;
+    let prixBrutStorage = localStorage.getItem("prixBrut");
+    prixTotalPanier.innerHTML = prixBrutStorage;
+    // let imageStorage = localStorage.getItem("images");
+    // imagePanier.innerHTML = imageStorage;
+
+    //fonction de multiplication pour prix * quantite
+    function addition(tarif, nombre){
+        return tarif * nombre;
+    };
+    let prixTotal = (addition(prixBrutStorage, quantiteStorage ));
+    console.log(prixTotal)
+    prixTotalPanier.innerHTML = "Prix total TTC : " +  prixTotal /100 + ",00 €";
+
 };
 
 afficherNom()

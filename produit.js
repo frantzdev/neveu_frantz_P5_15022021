@@ -33,6 +33,7 @@ function displayProducts(response) {
     const labelQuantite = document.createElement("label");
     const quantite = document.createElement("input");
     const prix = document.createElement("div");
+    const prixBrut = document.createElement("div");
     const BlockButon = document.createElement("div");
     const ajoutPanier = document.createElement("a");
 
@@ -59,6 +60,8 @@ function displayProducts(response) {
     quantite.setAttribute("id", "quantiteProduit");
     prix.setAttribute("class", "font-weight-bold mt-3");
     prix.setAttribute("id", "prixProduit");
+    prixBrut.setAttribute("id", "prixBrut");
+    prixBrut.setAttribute("class", "d-none");
     BlockButon.setAttribute("class", "text-center");
     ajoutPanier.setAttribute("class", "btn btn-dark mt-5");
     ajoutPanier.setAttribute("href", "panier.html");
@@ -79,6 +82,7 @@ function displayProducts(response) {
     formGroupQuantite.appendChild(labelQuantite);
     formGroupQuantite.appendChild(quantite);
     form.appendChild(prix);
+    form.appendChild(prixBrut);
     form.appendChild(BlockButon)
     BlockButon.appendChild(ajoutPanier);
 
@@ -87,8 +91,10 @@ function displayProducts(response) {
     description.innerHTML = response.description;
     label.innerHTML = "Choix des options";
     labelQuantite.innerHTML = "Quantité";
-    prix.innerHTML = response.price / 100 + ",00 €";
+    prix.innerHTML = response.price /100 + ",00 €";
+    prixBrut.innerHTML = response.price;
     ajoutPanier.innerHTML = "Ajouter au panier"
+
 
     // selection des options avec le constructeur option()
     let options = response.lenses;
@@ -127,17 +133,19 @@ function displayProducts(response) {
          //event.preventDefault();
         let captureQuantite = document.getElementById("quantiteProduit").value;
         localStorage.setItem("quantite", captureQuantite);
-        let capturePrix = document.getElementById("prixProduit").innerHTML;  
-        localStorage.setItem("prix", capturePrix);
+        let capturePrix = document.getElementById("prixBrut").innerHTML;  
+        localStorage.setItem("prixBrut", capturePrix);
         let captureNom = document.getElementById("nomProduit").innerHTML;
         localStorage.setItem("titre", captureNom)
         console.log(captureNom)
         let captureId = document.getElementById("idProduit").innerHTML;
         localStorage.setItem("identifiant", captureId);
         console.log(captureId);
-        let captureImageProduit = document.getElementById("imageProduit");
-        localStorage.setItem("images", captureImageProduit);
-        console.log(captureImageProduit);
+        let capturePrixBrut = document.getElementById("prixBrut").innerHTML;
+        localStorage.setItem("prixBrut", capturePrixBrut);
+        // let captureImageProduit = document.getElementById("imageProduit");
+        // localStorage.setItem("images", captureImageProduit);
+        // console.log(captureImageProduit);
     });
 
     
