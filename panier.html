@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-        <style>
-            .bg-color {
-                background-color: #F3E9F1
-            }
-        </style>
+    <style>
+        .bg-color {
+            background-color: #F3E9F1
+        }
+    </style>
 </head>
 
 <body class="bg-color">
@@ -43,69 +43,38 @@
 
 
     <main class="container" id="panier">
-        <!-- <div class="row my-5">
-            <div class="col text-center">
-                <h1 id="resultat" class="shadow-lg">Formulaire de commande</h1>
-            </div>
+
+
+        <!-- formulaire -->
+
+        <div class="row mt-5 justify-content-center" id="titreFormulaire">
+            <h2 class="text-center text-uppercase font-weight-bold font-italic border-dark shadow-lg col-10 mt-5"> Formulaire de commande</h2>
         </div>
-        <div class="row">
-            <div class="col">
-                <form id="form">
-                    <div class="form-group">
-                        <div class="row mt-3">
-                            <div class="col-3">
-                                <label for="nom">Nom</label>
-                                <input type="text" class="form-control" name="nom" id="nom" required>
-                            </div>
-                            <div class="col-3">
-                                <label for="prenom">Prénom</label>
-                                <input type="text" class="form-control" name="prenom" id="prenom" required>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-7">
-                                <label for="adresse">Adresse</label>
-                                <input type="text" class="form-control" name="adresse" id="adresse" required>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-sm-3">
-                                <label for="code postale">Code postale</label>
-                                <input type="text" class="form-control" name="code postale" id="code postale" required>
-                            </div>
-                            <div class="col-4">
-                                <label for="ville">Ville</label>
-                                <input type="text" class="form-control" name="ville" id="ville" required>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-sm-4">
-                                <label for="email">E-mail</label>
-                                <input type="email" class="form-control" name="email" id="email" required>
-                            </div>
-                            <div class="col-sm-4">
-                                <label for="telephone">Téléphone</label>
-                                <input type="tel" class="form-control" name="telephone" id="telephone" required pattern="[0-9]">
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6 col-12">
-                                <label for="numero de carte">Numéro de carte</label>
-                                <input type="text" class="form-control" name="numero de carte" id="numero de carte" required>
-                            </div>
-                            <div class="col-md-3 col-6">
-                                <label for="date">Date de validité</label>
-                                <input type="date" class="form-control" name="date" id="date" required>
-                            </div>
-                            <div class="col-md-3 col-6">
-                                <label for="code">Code</label>
-                                <input type="text" class="form-control" name="code" id="code" required>
-                            </div>
-                        </div> 
-                    </div>
-                    <input id="resultat" type="submit" class="btn btn-dark mt-3" value="valider"/>
-                </form>
-            </div> -->
+
+            <form class="row my-5 justify-content-center" id ="formulairePanier">
+                <div class="form-group col-8">
+                    <label for="firstName" class="mt-1">Prénom</label>
+                    <input type="text" name="firstName" id="firstName" class="form-control shadow-lg">
+
+                    <label for="lastName" class="mt-3">Nom</label>
+                    <input type="text" name="lastName" id="lastName" class="form-control shadow-lg">
+
+                    <label for="adress" class="mt-3">Adresse</label>
+                    <input type="text" name="adress" id="adress" class="form-control shadow-lg">
+
+                    <label for="city" class="mt-3">Ville</label>
+                    <input type="text" name="city" id="city" class="form-control shadow-lg">
+
+                    <label for="email" class="mt-3">Email</label>
+                    <input type="mail" name="email" id="email" class="form-control shadow-lg">
+                
+                <div class="text-center">
+                    <input type="submit" class="btn btn-dark mt-5" value="Valider votre commande" id="validationCommande">
+                </div>
+            </form>
+
+
+
 
     </main>
 
@@ -151,8 +120,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
-    
-    
+
+
     <script src="panier.js"></script>
 </body>
 

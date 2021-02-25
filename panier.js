@@ -1,5 +1,4 @@
 // mise en place de la structure HTML
-
 const mainPanier = document.getElementById("panier");
 const rowPanier = document.createElement("div");
 const titrePanier = document.createElement("h1");
@@ -12,22 +11,8 @@ const identifiantPanier = document.createElement("div");
 const prixUnitairePanier = document.createElement("div");
 const quantitePanier = document.createElement("div");
 const prixTotalPanier = document.createElement("div");
-const containerFormulaire = document.createElement("div");
-const formulaireTitre = document.createElement("h2");
-const formulairePanier = document.createElement("form");
-const formGroupPanier = document.createElement("div");
-const labelFirstName = document.createElement("label");
-const firstName = document.createElement("input");
-const labellastName = document.createElement("label");
-const lastName = document.createElement("input");
-const labelAdress = document.createElement("label");
-const adress = document.createElement("input");
-const labelCity = document.createElement("label");
-const city = document.createElement("input");
-const labelEmail = document.createElement("label");
-const email = document.createElement("input");
-const containerBouton = document.createElement("div");
-const boutonValidationPanier = document.createElement("input");
+const titreFormulaire = document.getElementById("titreFormulaire");
+const formulairePanier = document.getElementById("formulairePanier");
 
 mainPanier.appendChild(rowPanier);
 rowPanier.appendChild(titrePanier);
@@ -40,23 +25,8 @@ infoPanier.appendChild(identifiantPanier);
 infoPanier.appendChild(prixUnitairePanier);
 infoPanier.appendChild(quantitePanier);
 infoPanier.appendChild(prixTotalPanier);
-mainPanier.appendChild(containerFormulaire);
-containerFormulaire.appendChild(formulaireTitre);
-containerFormulaire.appendChild(formulairePanier);
-formulairePanier.appendChild(formGroupPanier);
-formGroupPanier.appendChild(labelFirstName);
-formGroupPanier.appendChild(firstName);
-formGroupPanier.appendChild(labellastName);
-formGroupPanier.appendChild(lastName);
-formGroupPanier.appendChild(labelAdress);
-formGroupPanier.appendChild(adress);
-formGroupPanier.appendChild(labelCity);
-formGroupPanier.appendChild(city);
-formGroupPanier.appendChild(labelEmail);
-formGroupPanier.appendChild(email);
-formGroupPanier.appendChild(containerBouton);
-containerBouton.appendChild(boutonValidationPanier);
-
+mainPanier.appendChild(titreFormulaire);
+mainPanier.appendChild(formulairePanier);
 
 titrePanier.setAttribute("class", "text-center text-uppercase font-weight-bold font-italic border-dark shadow-lg col mt-5");
 contenairPanier.setAttribute("class", "row mt-5 border border-dark");
@@ -69,53 +39,7 @@ identifiantPanier.setAttribute("class", "font-weight-bolder col mt-3");
 prixUnitairePanier.setAttribute("class", "font-weight-bolder col mt-3");
 quantitePanier.setAttribute("class", "font-weight-bolder col mt-3");
 prixTotalPanier.setAttribute("class", "font-weight-bolder col text-right mt-3")
-containerFormulaire.setAttribute("class", "row justify-content-center mt-5")
-formulaireTitre.setAttribute("class", "text-center text-uppercase font-weight-bold font-italic border-dark shadow-lg col-8 mt-5");
-formulairePanier.setAttribute("class", " col-8 my-5");
-formGroupPanier.setAttribute("class", " ");
-labelFirstName.setAttribute("for", "prenom");
-labelFirstName.setAttribute("class", "mt-3");
-firstName.setAttribute("name", "prenom");
-firstName.setAttribute("class", "form-control shadow-lg");
-firstName.setAttribute("value", " ");
-labellastName.setAttribute("for", "nom");
-labellastName.setAttribute("class", "mt-3");
-lastName.setAttribute("name", "prenom");
-lastName.setAttribute("class", "form-control shadow-lg");
-lastName.setAttribute("value", " ");
-labelAdress.setAttribute("for", "adress")
-labelAdress.setAttribute("class", "mt-3");
-adress.setAttribute("name", "adress");
-adress.setAttribute("class", "form-control shadow-lg");
-adress.setAttribute("value", " ");
-labelCity.setAttribute("for", "city")
-labelCity.setAttribute("class", "mt-3");
-city.setAttribute("name", "city");
-city.setAttribute("class", "form-control shadow-lg");
-city.setAttribute("value", " ");
-labelEmail.setAttribute("for", "email")
-labelEmail.setAttribute("class", "mt-3");
-email.setAttribute("name", "email");
-email.setAttribute("class", "form-control shadow-lg");
-email.setAttribute("value", " ");
-containerBouton.setAttribute("class", "text-center");
-boutonValidationPanier.setAttribute("class", "btn btn-dark mt-5");
-boutonValidationPanier.setAttribute("type", "submit");
-boutonValidationPanier.setAttribute("value", "valider votre commande");
 
-
-titrePanier.innerHTML = "PANIER"
-formulaireTitre.innerHTML = "Formulaire de commande"
-labelFirstName.innerHTML = "Prenom"
-firstName.value = "jean";
-labellastName.innerHTML = "Nom"
-labelAdress.innerHTML = "adresse";
-labelCity.innerHTML = "ville";
-labelEmail.innerHTML = "email"
-lastName.value = "edouard"
-adress.value = "dole";
-city.value = "ville";
-email.value = "gsgsgsg"
 
 //recuperation du local storage
 const afficherNom = () => {
@@ -132,7 +56,7 @@ const afficherNom = () => {
     // let imageStorage = localStorage.getItem("images");
     // imagePanier.innerHTML = imageStorage;
 
-    //fonction de multiplication pour prix * quantite
+    //fonction de multiplication pour le panier =  prix * quantite
     function addition(tarif, nombre){
         return tarif * nombre;
     };
@@ -143,3 +67,82 @@ const afficherNom = () => {
 };
 
 afficherNom()
+
+
+//déclenchement evenement sur les input
+formulairePanier.addEventListener('change', () => {
+    saisiFirstName(firstName);
+    saisiLastName(lastName);
+    saisiAdress(adress);
+    saisiCity(city);
+    saisiEmail(email);
+});
+
+// mise en place de la regex pour l'input du formulaire
+function saisiFirstName(firstName) {
+    let firstNameRegex = new RegExp('[a-z A-Z]');
+    // test de la regex
+    let testfirstNameRegex = firstNameRegex.test(firstName.value);
+    console.log(testfirstNameRegex)
+    if (testfirstNameRegex) {
+        firstName.classList.remove("bg-danger");
+        firstName.classList.add("bg-success");
+    } else {
+        firstName.classList.remove("bg-success");
+        firstName.classList.add("bg-danger");
+    }
+};
+
+function saisiLastName(lastName) {
+    let lastNameRegex = new RegExp('[a-z A-Z]');
+    //test de la regex
+    let testlastNameRegex = lastNameRegex.test(lastName.value);
+    if (testlastNameRegex) {
+        lastName.classList.remove("bg-danger");
+        lastName.classList.add("bg-success");
+    } else {
+        lastName.classList.remove("bg-success");
+        lastName.classList.add("bg-danger");
+    }
+};
+
+function saisiAdress(adress) {
+    let adressRegex = new RegExp('[a-z A-Z]');
+    //test de la regex
+    let testadressRegex = adressRegex.test(adress.value);
+    if (testadressRegex) {
+        adress.classList.remove("bg-danger");
+        adress.classList.add("bg-success");
+    } else {
+        adress.classList.remove("bg-success");
+        adress.classList.add("bg-danger");
+    }
+};
+
+function saisiCity(city) {
+    let cityRegex = new RegExp('[a-z A-Z]');
+    //test de la regex
+    let testcityRegex = cityRegex.test(city.value);
+    if (testcityRegex) {
+        city.classList.remove("bg-danger");
+        city.classList.add("bg-success");
+    } else {
+        city.classList.remove("bg-success");
+        city.classList.add("bg-danger");
+    }
+};
+
+function saisiEmail(email) {
+    let emailRegex = new RegExp('[a-z A-Z]');
+    //test de la regex
+    let testemailRegex = emailRegex.test(email.value);
+    if (testemailRegex) {
+        email.classList.remove("bg-danger");
+        email.classList.add("bg-success");
+    } else {
+        email.classList.remove("bg-success");
+        email.classList.add("bg-danger");
+    }
+};
+
+
