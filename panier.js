@@ -12,7 +12,7 @@ const prixUnitairePanier = document.createElement("div");
 const quantitePanier = document.createElement("div");
 const prixTotalPanier = document.createElement("div");
 const titreFormulaire = document.getElementById("titreFormulaire");
-const formulairePanier = document.getElementById("formulairePanier");
+
 
 mainPanier.appendChild(rowPanier);
 rowPanier.appendChild(titrePanier);
@@ -26,7 +26,7 @@ infoPanier.appendChild(prixUnitairePanier);
 infoPanier.appendChild(quantitePanier);
 infoPanier.appendChild(prixTotalPanier);
 mainPanier.appendChild(titreFormulaire);
-mainPanier.appendChild(formulairePanier);
+
 
 titrePanier.setAttribute("class", "text-center text-uppercase font-weight-bold font-italic border-dark shadow-lg col mt-5");
 contenairPanier.setAttribute("class", "row mt-5 border border-dark");
@@ -46,7 +46,7 @@ const afficherNom = () => {
     let quantiteStorage = localStorage.getItem("quantite");
     quantitePanier.innerHTML = "Quantité : " + quantiteStorage;
     let prixStorage = localStorage.getItem("prix");
-    prixUnitairePanier.innerHTML = "Prix unitaire : " + prixStorage /100 + ",00 €";
+    prixUnitairePanier.innerHTML = "Prix unitaire : " + prixStorage / 100 + ",00 €";
     let nameStorage = localStorage.getItem("titre");
     namePanier.innerHTML = nameStorage;
     let idStorage = localStorage.getItem("identifiant");
@@ -57,92 +57,108 @@ const afficherNom = () => {
     // imagePanier.innerHTML = imageStorage;
 
     //fonction de multiplication pour le panier =  prix * quantite
-    function addition(tarif, nombre){
+    function addition(tarif, nombre) {
         return tarif * nombre;
     };
-    let prixTotal = (addition(prixBrutStorage, quantiteStorage ));
+    let prixTotal = (addition(prixBrutStorage, quantiteStorage));
     console.log(prixTotal)
-    prixTotalPanier.innerHTML = "Prix total TTC : " +  prixTotal /100 + ",00 €";
+    prixTotalPanier.innerHTML = "Prix total TTC : " + prixTotal / 100 + ",00 €";
 
 };
 
 afficherNom()
 
 
-//déclenchement evenement sur les input
-formulairePanier.addEventListener('change', () => {
-    saisiFirstName(firstName);
-    saisiLastName(lastName);
-    saisiAdress(adress);
-    saisiCity(city);
-    saisiEmail(email);
+
+//recuperation formulaire du Panier
+const formulairePanier = document.getElementById("formulairePanier");
+mainPanier.appendChild(formulairePanier);
+//Nous testons le fait que l'on retrouve bien l'input firstName dans le formulaire
+console.log(formulairePanier.firstName);
+
+//ecoute des modifications sur input firstName
+formulairePanier.firstName.addEventListener("change", ()=> {
+    validFirstName(formulairePanier.firstName);
 });
-
-// mise en place de la regex pour l'input du formulaire
-function saisiFirstName(firstName) {
-    let firstNameRegex = new RegExp('[a-z A-Z]');
-    // test de la regex
+// -----------------------validation firstName----------------------------
+const validFirstName = function(firstName) {
+    let firstNameRegex = new RegExp('^[A-Za-z\é\è\ê\-]+$');
     let testfirstNameRegex = firstNameRegex.test(firstName.value);
-    console.log(testfirstNameRegex)
-    if (testfirstNameRegex) {
-        firstName.classList.remove("bg-danger");
-        firstName.classList.add("bg-success");
-    } else {
-        firstName.classList.remove("bg-success");
-        firstName.classList.add("bg-danger");
-    }
+    console.log(testfirstNameRegex);
+    let small = formulairePanier.firstName.nextElementSibling;
+    controleValidation(small, testfirstNameRegex);
 };
 
-function saisiLastName(lastName) {
-    let lastNameRegex = new RegExp('[a-z A-Z]');
-    //test de la regex
-    let testlastNameRegex = lastNameRegex.test(lastName.value);
-    if (testlastNameRegex) {
-        lastName.classList.remove("bg-danger");
-        lastName.classList.add("bg-success");
-    } else {
-        lastName.classList.remove("bg-success");
-        lastName.classList.add("bg-danger");
-    }
+
+//ecoute des modifications sur input LastName
+formulairePanier.lastName.addEventListener("change", ()=> {
+    validLastName(formulairePanier.lastName);
+});
+// -----------------------validation LastName----------------------------
+const validLastName = function(inputlastName) {
+    let lastNameRegex = new RegExp('^[A-Za-z\é\è\ê\-]+$');
+    let testlastNameRegex = lastNameRegex.test(inputlastName.value);
+    console.log(testlastNameRegex);
+    let small = formulairePanier.lastName.nextElementSibling;
+    controleValidation(small, testlastNameRegex);
 };
 
-function saisiAdress(adress) {
-    let adressRegex = new RegExp('[a-z A-Z]');
-    //test de la regex
-    let testadressRegex = adressRegex.test(adress.value);
-    if (testadressRegex) {
-        adress.classList.remove("bg-danger");
-        adress.classList.add("bg-success");
-    } else {
-        adress.classList.remove("bg-success");
-        adress.classList.add("bg-danger");
-    }
+
+//ecoute des modifications sur input adress
+formulairePanier.adress.addEventListener("change", ()=> {
+    validadress(formulairePanier.adress);
+});
+// -----------------------validation adress----------------------------
+const validadress = function(inputadress) {
+    let adressRegex = new RegExp('^[0-9 A-Za-z\é\è\ê\-]+$');
+    let testadressRegex = adressRegex.test(inputadress.value);
+    console.log(testadressRegex);
+    let small = formulairePanier.adress.nextElementSibling;
+    controleValidation(small, testadressRegex);
 };
 
-function saisiCity(city) {
-    let cityRegex = new RegExp('[a-z A-Z]');
-    //test de la regex
-    let testcityRegex = cityRegex.test(city.value);
-    if (testcityRegex) {
-        city.classList.remove("bg-danger");
-        city.classList.add("bg-success");
-    } else {
-        city.classList.remove("bg-success");
-        city.classList.add("bg-danger");
-    }
+
+//ecoute des modifications sur input city
+formulairePanier.city.addEventListener("change", ()=> {
+    validcity(formulairePanier.city);
+});
+// -----------------------validation city----------------------------
+const validcity = function(inputcity) {
+    let cityRegex = new RegExp('^[A-Za-z\é\è\ê\-]+$');
+    let testcityRegex = cityRegex.test(inputcity.value);
+    console.log(testcityRegex);
+    let small = formulairePanier.city.nextElementSibling;
+    controleValidation(small, testcityRegex);
 };
 
-function saisiEmail(email) {
-    let emailRegex = new RegExp('[a-z A-Z]');
-    //test de la regex
+
+//ecoute des modifications sur input Email
+formulairePanier.email.addEventListener("change", ()=> {
+    validEmail(formulairePanier.email);
+});
+// -----------------------validation email----------------------------
+const validEmail = function(email) {
+    let emailRegex = new RegExp('^[a-zA-Z0-9-._]+[@]{1}[a-zA-Z0-9-._]+[.]{1}[a-z]{2,10}$','g');
     let testemailRegex = emailRegex.test(email.value);
-    if (testemailRegex) {
-        email.classList.remove("bg-danger");
-        email.classList.add("bg-success");
+    console.log(testemailRegex);
+    let small = formulairePanier.email.nextElementSibling;
+    controleValidation(small, testemailRegex);
+};
+
+
+// création d'une fonction pour tester la validation de chaque input
+function controleValidation(element, test) {
+    if (test) {
+        element.innerHTML = "Format Valide";
+        element.style.color = "green";
     } else {
-        email.classList.remove("bg-success");
-        email.classList.add("bg-danger");
+        element.innerHTML = "Format non Valide";
+        element.style.color = "red";
     }
 };
+
+
+
+
 
 
