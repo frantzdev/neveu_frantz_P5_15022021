@@ -37,7 +37,6 @@ function displayProducts(response) {
     const BlockButon = document.createElement("div");
     const ajoutPanier = document.createElement("a");
 
-
     titre.setAttribute("class", "text-center text-uppercase font-weight-bold font-italic border-dark shadow-lg col mt-3")
     titre.setAttribute("id", "nomProduit");
     contenue.setAttribute("class", "row justify-content-center my-5");
@@ -65,6 +64,7 @@ function displayProducts(response) {
     BlockButon.setAttribute("class", "text-center");
     ajoutPanier.setAttribute("class", "btn btn-dark mt-5");
     ajoutPanier.setAttribute("href", "panier.html");
+    ajoutPanier.setAttribute("id", "ajoutPanier");
 
     article.appendChild(titre);
     article.appendChild(contenue);
@@ -91,14 +91,12 @@ function displayProducts(response) {
     description.innerHTML = response.description;
     label.innerHTML = "Choix des options";
     labelQuantite.innerHTML = "Quantité";
-    prix.innerHTML = response.price /100 + ",00 €";
+    prix.innerHTML = response.price / 100 + ",00 €";
     prixBrut.innerHTML = response.price;
     ajoutPanier.innerHTML = "Ajouter au panier"
 
-
     // selection des options avec le constructeur option()
     let options = response.lenses;
-    console.log(options)
     options.forEach(function (element, key) {
         select[key] = new Option(element, key);
     });
@@ -106,7 +104,7 @@ function displayProducts(response) {
 
     // recuperation du formulaire
     const formulaire = document.getElementById("formulaire");
-    console.log(formulaire.quantite)
+
 
     //ecoute de l'input quantite dans le formulaire
     quantite.addEventListener("change", () => {
@@ -118,7 +116,6 @@ function displayProducts(response) {
         let quantiteRegex = new RegExp('[1-9]');
         // test de la regex
         let testQuantiteRegex = quantiteRegex.test(quantite.value);
-        console.log(testQuantiteRegex)
         if (testQuantiteRegex) {
             quantite.classList.remove("bg-danger");
             quantite.classList.add("bg-success");
@@ -127,28 +124,45 @@ function displayProducts(response) {
             quantite.classList.add("bg-danger");
         }
     };
-
-    // Récupération des elements pour les integrer au local storage
-    ajoutPanier.addEventListener("click", (event) => {
-         //event.preventDefault();
-        let captureQuantite = document.getElementById("quantiteProduit").value;
-        localStorage.setItem("quantite", captureQuantite);
-        let capturePrix = document.getElementById("prixBrut").innerHTML;  
-        localStorage.setItem("prixBrut", capturePrix);
-        let captureNom = document.getElementById("nomProduit").innerHTML;
-        localStorage.setItem("titre", captureNom)
-        console.log(captureNom)
-        let captureId = document.getElementById("idProduit").innerHTML;
-        localStorage.setItem("identifiant", captureId);
-        console.log(captureId);
-        let capturePrixBrut = document.getElementById("prixBrut").innerHTML;
-        localStorage.setItem("prixBrut", capturePrixBrut);
-        // let captureImageProduit = document.getElementById("imageProduit");
-        // localStorage.setItem("images", captureImageProduit);
-        // console.log(captureImageProduit);
-    });
-
     
     
+        
+        ajoutPanier.addEventListener("click", (event) => {
+            event.preventDefault();
+            //déclarer l'object
+            let object = {
+                id: response._id,
+                quantite: quantite.value
+            };
+            //création d'une variable contenant un tableau vide
+            let tab = []
+            //recuperation de la chaine dans une variable 
+            let panierStore = JSON.parse(localStorage.getItem('panier'));
+            console.log(panierStore)
+            //si le localStorage contient quelque chose 
+            if (panierStore !== null) {
+                tab = panierStore; 
+            }
+            tab.push(object)
+            for(let i of tab) {
+                if(i.id === object.id) {
+                    i.quantite = object.quantite;
+                    console.log(object.quantite)
+                }
+            }
+            //local storage sauvegarde le tableau sous forme de chaine
+            localStorage.setItem('panier', JSON.stringify(tab))
+            
+
+        });
+        // si un id est déjà dans le local storage
+        // attrapper l'article dans le local storage
+        //modifier l'article
+        //recharger l'article dans le local une fois celui ci modifié
+
+
+
+
+
 
 };
