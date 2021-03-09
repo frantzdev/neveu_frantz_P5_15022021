@@ -124,45 +124,41 @@ function displayProducts(response) {
             quantite.classList.add("bg-danger");
         }
     };
-    
-    
-        
-        ajoutPanier.addEventListener("click", (event) => {
-            event.preventDefault();
-            //déclarer l'object
-            let object = {
-                id: response._id,
-                quantite: quantite.value
-            };
-            //création d'une variable contenant un tableau vide
-            let tab = []
-            //recuperation de la chaine dans une variable 
-            let panierStore = JSON.parse(localStorage.getItem('panier'));
-            console.log(panierStore)
-            //si le localStorage contient quelque chose 
-            if (panierStore !== null) {
-                tab = panierStore; 
-            }
-            tab.push(object)
-            for(let i of tab) {
-                if(i.id === object.id) {
-                    i.quantite = object.quantite;
-                    console.log(object.quantite)
-                }
-            }
-            //local storage sauvegarde le tableau sous forme de chaine
-            localStorage.setItem('panier', JSON.stringify(tab))
-            
 
+
+
+    ajoutPanier.addEventListener("click", (event) => {
+        //event.preventDefault();
+        // déclarer l'object
+        let object = {
+            id: response._id,
+            quantite: parseInt(quantite.value)
+        };
+        //création d'une variable contenant un tableau vide
+        let tab = []
+        //recuperation de la chaine dans une variable 
+        let BasketStore = JSON.parse(localStorage.getItem('Basket'));
+        console.log(BasketStore)
+        //si le localStorage contient quelque chose 
+        if (BasketStore !== null) {
+            tab = BasketStore;
+        }
+        let itemExist = false;
+        tab.forEach(item => {
+            if (item.id === object.id) {
+                itemExist = true;
+                item.quantite += parseInt(object.quantite);
+                console.log(item, object.quantite)
+            }
         });
-        // si un id est déjà dans le local storage
-        // attrapper l'article dans le local storage
-        //modifier l'article
-        //recharger l'article dans le local une fois celui ci modifié
+        if (!itemExist) {
+            tab.push(object)
+        }
+
+        //local storage sauvegarde le tableau sous forme de chaine
+        localStorage.setItem('Basket', JSON.stringify(tab))
 
 
-
-
-
+    });
 
 };
