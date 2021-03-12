@@ -1,10 +1,13 @@
 //recuperation du local storage
 const storedBasket = JSON.parse(localStorage.getItem('Basket'));
+//déclaration d'un tableau pour le calcul de la somme totale du panier
+let arrayTotalPriceItem = [];
+
 
 //boucle du localStorage pour récuperer chaque article individuellement
 for (let basketUnit of storedBasket) {
     basketUnit.quantite = parseInt(basketUnit.quantite);
-    console.log(basketUnit.id)
+    //console.log(basketUnit.id)
 
     //requette serveur pour acceder aux informations
     let request = new XMLHttpRequest();
@@ -26,8 +29,8 @@ for (let basketUnit of storedBasket) {
             const prixVirgule = document.createElement("div");
             const quantiteBasket = document.createElement("div");
             const prixTotalBasket = document.createElement("div");
-
-            const essai = document.getElementById("essai");
+            const containerFinalPrice = document.getElementById("containerFinalPrice")
+            const finalPrice = document.getElementById("finalPrice");
 
             mainBasket.appendChild(rowBasket);
             rowBasket.appendChild(titreBasket);
@@ -41,53 +44,66 @@ for (let basketUnit of storedBasket) {
             infoBasket.appendChild(prixVirgule);
             infoBasket.appendChild(quantiteBasket);
             infoBasket.appendChild(prixTotalBasket);
-            mainBasket.appendChild(essai)
+            mainBasket.appendChild(containerFinalPrice);
+            containerFinalPrice.appendChild(finalPrice)
 
 
             titreBasket.setAttribute("class", "text-center text-uppercase font-weight-bold font-italic border-dark shadow-lg col mt-5");
             mainBasket.setAttribute("class", "container justify-content-center")
-            contenairBasket.setAttribute("class", "row mt-5 border border-dark col");
-            photoBasket.setAttribute("class", "col-md-6");
+            contenairBasket.setAttribute("class", "row mt-5 col");
+            photoBasket.setAttribute("class", "col-6 col-md-4");
             imageBasket.setAttribute("src", response.imageUrl);
-            imageBasket.setAttribute("class", "d-block w-75  border-dark rounded");
-            infoBasket.setAttribute("class", "col mt-3");
+            imageBasket.setAttribute("class", "d-block w-100 rounded shadow-lg");
+            infoBasket.setAttribute("class", "col-md-8 col bg-light rounded shadow-lg");
             nameBasket.setAttribute("class", "font-weight-bolder col mt-3");
             identifiantBasket.setAttribute("class", "font-weight-bolder col mt-3");
             prixUnitaireBasket.setAttribute("class", "d-none");
             prixVirgule.setAttribute("class", 'font-weight-bolder col mt-3');
             quantiteBasket.setAttribute("class", "font-weight-bolder col mt-3");
             prixTotalBasket.setAttribute("class", "font-weight-bolder col text-right mt-3");
-
-            //mise en place de la fonction calculer le prix total de chaque article dans le panier
-            function itemTotalPrice(number1, number2) {
-                return number1 * number2;
-            };
+            
             //affiche l'article unitaire du panier
             nameBasket.innerHTML = response.name;
             prixVirgule.innerHTML = response.price / 100 + ",00 €";
             identifiantBasket.innerHTML = response._id;
             quantiteBasket.innerHTML = basketUnit.quantite;
             prixUnitaireBasket.innerHTML = response.price;
-            let result = itemTotalPrice(prixUnitaireBasket.innerHTML, basketUnit.quantite)
-            prixTotalBasket.innerHTML = "Prix total TTC = " + result / 100 + ",00 €";
 
+            //mise en place de la fonction calculer le prix total de chaque article dans le panier
+            function itemTotalPrice(number1, number2) {
+                return number1 * number2;
+            };
+            let totalPriceItem = itemTotalPrice(prixUnitaireBasket.innerHTML, basketUnit.quantite)
+            prixTotalBasket.innerHTML = "Prix TTC = " + totalPriceItem / 100 + ",00 €";    
 
-            essai.innerHTML = result
+            //calcul pour la somme totale du panier 
+            //push le prix total de chaque article dans un tableau déclaré tout en haut de la page
+            arrayTotalPriceItem.push(totalPriceItem)
+            let totalPriceAllItems = arrayTotalPriceItem.reduce(function (total, totalPriceItem) {
+                return total + totalPriceItem;
+              }, 0);
+            //affiche le resultat du prix total du panier
+            finalPrice.innerHTML = "Montant total TTC =  " + totalPriceAllItems /100 + " ,00 €";
+            //envoi des données en local storage pour récupération sur la page confirmation
+            localStorage.setItem("prixTotal", JSON.stringify(finalPrice.innerHTML));
+            localStorage.setItem("quantite", JSON.stringify(quantiteBasket.innerHTML))
 
-
-        };
+      };
     }
     request.open("GET", "http://localhost:3000/api/cameras/" + basketUnit.id);
     request.send();
 };
-//recuperation formulaire du Basket
 
+
+           
+//recuperation formulaire du Basket
 const formulaireBasket = document.getElementById("formulaireBasket");
 const firstName = document.getElementById("firstName");
 const lastName = document.getElementById("lastName");
 const address = document.getElementById("address");
 const city = document.getElementById("city");
 const email = document.getElementById("email");
+
 
 // -----------------------validation firstName----------------------------
 function validFirstName(firstName) {
@@ -210,30 +226,24 @@ email.addEventListener("change", () => {
 
 // --------------------------------POST--------------------------
 
-//créer un tableau dans une variable
-    //créer un object contact dans une variable
-// l'object contact doit etre complété par les données du formulaire
-// le tableau doit être complété avec les ID de chaque article présent dans le panier
-//ajouter les 2 variables dans une seule qui doit être envoyé sur le serveur
-
 //ecouter la soumission du formulaire
 
 formulaireBasket.addEventListener('submit', (event) => {
     event.preventDefault();
-
-    if(validFirstName(firstName), validLastName(lastName), validAddress(address), validCity(city), validEmail(email)  == true) {
-        
-    } else {
+    if (validFirstName(firstName), validLastName(lastName), validAddress(address), validCity(city), validEmail(email) != true) {
         event.preventDefault();
-        alert("Désolé un champ du formulaire n'est pas valide")
-    }
+        alert("Désolé un champ du formulaire n'est pas valide");
+    } 
+        
     
+    
+    //création du tableau products qui recevra les ID 
     let products = [];
-    console.log(products)
+    console.log(products);
     for (let eachId of storedBasket) {
         products.push(eachId.id);
-        
-    }
+    };
+    //création d'un constructor pour l'object contact attendu sur le serveur
     class contacts {
         constructor(firstName, lastName, address, city, email) {
             this.firstName = firstName;
@@ -242,36 +252,34 @@ formulaireBasket.addEventListener('submit', (event) => {
             this.city = city;
             this.email = email;
         }
-    }
-    let contact = new contacts(firstName.value, lastName.value,address.value, city.value, email.value)
-    console.log(contact)
+    };
 
+    let contact = new contacts(firstName.value, lastName.value, address.value, city.value, email.value);
 
-    let essai = {
+    //object qui contient l'object contact et le tableau products attendu sur le serveur
+    let data = {
         contact,
         products
     };
+    console.log(data);
 
-    localStorage.setItem('essai', JSON.stringify(essai))
-    console.log(essai)
-     
+    // Créer une requête de type "POST"
     let request = new XMLHttpRequest();
-request.open("POST", "http://localhost:3000/api/cameras/order");
-request.setRequestHeader("Content-Type", "application/json");
-request.send(JSON.stringify(essai));
+    request.open('POST', 'http://localhost:3000/api/cameras/order');
+    request.setRequestHeader('Content-Type', 'application/json');
+    request.send(JSON.stringify(data));
+
+    // Lorsque la requête à bien été envoyée, récupérer le résultat renvoyé par le service web.
+    //status à 201
+    request.onreadystatechange = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+            let response = JSON.parse(this.responseText);
+            //stocker les informations de l'object contact en sessionStorage
+            sessionStorage.setItem("orderId", JSON.stringify(response.orderId));
+            sessionStorage.setItem("contact", JSON.stringify(response.contact));
+            sessionStorage.setItem("products", JSON.stringify(response.products));
+            window.location.href='confirmation.html';
+        }
+    };  
 
 });
-    
-
-
-//format POSTMAN
-// {
-//     "contact": {
-//         "firstName": "string",
-//         "lastName": "string",
-//         "address": "string",
-//         "city": "string",
-//         "email": "string"
-//     },
-//     "products": []
-// }

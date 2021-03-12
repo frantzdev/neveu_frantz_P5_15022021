@@ -47,28 +47,4 @@ function displayItems(response) {
 // essai animation sur titre
 const monTitre = document.getElementById("title");
 
-monTitre.addEventListener("click", (event) => {
-    monTitre.animate([
-        // keyframes
-        { transform: 'translateY(0px)' },
-        { transform: 'translateY(-300px)' }
-      ], {
-        // timing options
-        duration: 1000,
-        iterations: 2,
-      });
-      
-      if(event.altKey) {
-        changeCouleur("green", monTitre);
-      } else 
-      changeCouleur('red', monTitre);    
-});
-
-function changeCouleur(couleur, element) {
-    element.style.color = couleur;
-};
-
-function changeTaille(taille, element) {
-    element.style.fontSize = taille;
-};
 

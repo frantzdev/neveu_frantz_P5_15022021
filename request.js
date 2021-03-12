@@ -5,7 +5,7 @@ const get = (url) => {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
           var response = JSON.parse(this.responseText);
           resolve(response);
-        }      
+        }
       };
       
       request.open("GET", url);

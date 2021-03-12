@@ -10,7 +10,7 @@ request.onreadystatechange = function () {
     if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
         let response = JSON.parse(this.responseText);
         displayProducts(response)
-    }
+    } 
 };
 request.open("GET", "http://localhost:3000/api/cameras/" + id);
 request.send();
@@ -134,6 +134,13 @@ function displayProducts(response) {
             id: response._id,
             quantite: parseInt(quantite.value)
         };
+
+        if(quantite.value < 1) {
+            event.preventDefault();
+            alert("veuillez entrer un nombre pour continuer !");
+        } 
+            
+        
         //création d'une variable contenant un tableau vide
         let tab = []
         //recuperation de la chaine dans une variable 
