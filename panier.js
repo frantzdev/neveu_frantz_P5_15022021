@@ -7,7 +7,7 @@ let arrayTotalPriceItem = [];
 //boucle du localStorage pour récuperer chaque article individuellement
 for (let basketUnit of storedBasket) {
     basketUnit.quantite = parseInt(basketUnit.quantite);
-    //console.log(basketUnit.id)
+    //console.log(basketUnit.quantite)
 
     //requette serveur pour acceder aux informations
     let request = new XMLHttpRequest();
@@ -61,7 +61,7 @@ for (let basketUnit of storedBasket) {
             prixVirgule.setAttribute("class", 'font-weight-bolder col mt-3');
             quantiteBasket.setAttribute("class", "font-weight-bolder col mt-3");
             prixTotalBasket.setAttribute("class", "font-weight-bolder col text-right mt-3");
-            
+
             //affiche l'article unitaire du panier
             nameBasket.innerHTML = response.name;
             prixVirgule.innerHTML = response.price / 100 + ",00 €";
@@ -74,28 +74,28 @@ for (let basketUnit of storedBasket) {
                 return number1 * number2;
             };
             let totalPriceItem = itemTotalPrice(prixUnitaireBasket.innerHTML, basketUnit.quantite)
-            prixTotalBasket.innerHTML = "Prix TTC = " + totalPriceItem / 100 + ",00 €";    
+            prixTotalBasket.innerHTML = "Prix TTC = " + totalPriceItem / 100 + ",00 €";
 
             //calcul pour la somme totale du panier 
             //push le prix total de chaque article dans un tableau déclaré tout en haut de la page
             arrayTotalPriceItem.push(totalPriceItem)
             let totalPriceAllItems = arrayTotalPriceItem.reduce(function (total, totalPriceItem) {
                 return total + totalPriceItem;
-              }, 0);
+            }, 0);
             //affiche le resultat du prix total du panier
-            finalPrice.innerHTML = "Montant total TTC =  " + totalPriceAllItems /100 + " ,00 €";
+            finalPrice.innerHTML = "Montant total TTC =  " + totalPriceAllItems / 100 + " ,00 €";
             //envoi des données en local storage pour récupération sur la page confirmation
             localStorage.setItem("prixTotal", JSON.stringify(finalPrice.innerHTML));
             localStorage.setItem("quantite", JSON.stringify(quantiteBasket.innerHTML))
 
-      };
+        };
     }
     request.open("GET", "http://localhost:3000/api/cameras/" + basketUnit.id);
     request.send();
 };
 
 
-           
+
 //recuperation formulaire du Basket
 const formulaireBasket = document.getElementById("formulaireBasket");
 const firstName = document.getElementById("firstName");
@@ -107,7 +107,7 @@ const email = document.getElementById("email");
 
 // -----------------------validation firstName----------------------------
 function validFirstName(firstName) {
-    let firstNameRegex = new RegExp('^[A-Za-z\é\è\ê\ -]+$');
+    let firstNameRegex = new RegExp('^[A-Za-z\é\è\ê\ -]{2,30}$', 'g');
     let testfirstNameRegex = firstNameRegex.test(firstName.value);
     console.log(testfirstNameRegex);
     let small = firstName.nextElementSibling;
@@ -131,7 +131,7 @@ firstName.addEventListener("change", () => {
 
 // -----------------------validation LastName----------------------------
 function validLastName(lastName) {
-    let lastNameRegex = new RegExp('^[A-Za-z\é\è\ê\ -]+$');
+    let lastNameRegex = new RegExp('^[A-Za-z\é\è\ê\ -]{2,30}$', 'g');
     let testlastNameRegex = lastNameRegex.test(lastName.value);
     console.log(testlastNameRegex);
     let small = lastName.nextElementSibling;
@@ -156,7 +156,7 @@ lastName.addEventListener("change", () => {
 
 // -----------------------validation adress----------------------------
 function validAddress(address) {
-    let adressRegex = new RegExp('^[0-9 A-Za-z\é\è\ê\ -]+$');
+    let adressRegex = new RegExp('^[0-9 A-Za-z\é\è\ê\ -]{2,30}$', 'g');
     let testaddressRegex = adressRegex.test(address.value);
     console.log(testaddressRegex);
     let small = address.nextElementSibling;
@@ -180,7 +180,7 @@ address.addEventListener("change", () => {
 
 // -----------------------validation city----------------------------
 function validCity(city) {
-    let cityRegex = new RegExp('^[A-Za-z\é\è\ê\ -]+$');
+    let cityRegex = new RegExp('^[A-Za-z\é\è\ê\ -]{2,30}$', 'g');
     let testcityRegex = cityRegex.test(city.value);
     console.log(testcityRegex);
     let small = city.nextElementSibling;
@@ -233,16 +233,15 @@ formulaireBasket.addEventListener('submit', (event) => {
     if (validFirstName(firstName), validLastName(lastName), validAddress(address), validCity(city), validEmail(email) != true) {
         event.preventDefault();
         alert("Désolé un champ du formulaire n'est pas valide");
-    } 
-        
-    
-    
+    }
+
     //création du tableau products qui recevra les ID 
     let products = [];
     console.log(products);
     for (let eachId of storedBasket) {
         products.push(eachId.id);
     };
+
     //création d'un constructor pour l'object contact attendu sur le serveur
     class contacts {
         constructor(firstName, lastName, address, city, email) {
@@ -278,8 +277,8 @@ formulaireBasket.addEventListener('submit', (event) => {
             sessionStorage.setItem("orderId", JSON.stringify(response.orderId));
             sessionStorage.setItem("contact", JSON.stringify(response.contact));
             sessionStorage.setItem("products", JSON.stringify(response.products));
-            window.location.href='confirmation.html';
+            window.location.href = 'confirmation.html';
         }
-    };  
+    };
 
 });

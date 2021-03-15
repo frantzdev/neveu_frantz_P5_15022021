@@ -1,8 +1,11 @@
+//récupération de la promise
 get("http://localhost:3000/api/cameras").then(response => {
     displayItems(response) 
 });
 
+//structure de la page HTML
 function displayItems(response) {
+    //boucle pour dupliquer la structure du code selon le nombre d'article présent dans l'api
     response.forEach(camera => {
 
         const article = document.getElementById("article");
@@ -39,12 +42,5 @@ function displayItems(response) {
         cardTitle.innerHTML = camera.name;
         lien.innerHTML = camera.price / 100 + ",00 €";
     });
-}
-
-
-
-
-// essai animation sur titre
-const monTitre = document.getElementById("title");
-
+};
 

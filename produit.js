@@ -1,19 +1,14 @@
 //recuperation de l'element ID dans l'adresse
-var url_string = window.location.href
-var url = new URL(url_string);
-var id = url.searchParams.get("id");
+let url_string = window.location.href
+let url = new URL(url_string);
+let id = url.searchParams.get("id");
 console.log(id);
 
+//récupération de la promise
+get("http://localhost:3000/api/cameras/" + id).then(response => {
+    displayProducts(response)
+});
 
-let request = new XMLHttpRequest();
-request.onreadystatechange = function () {
-    if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-        let response = JSON.parse(this.responseText);
-        displayProducts(response)
-    } 
-};
-request.open("GET", "http://localhost:3000/api/cameras/" + id);
-request.send();
 
 // structure de la page Produit
 function displayProducts(response) {
@@ -32,6 +27,7 @@ function displayProducts(response) {
     const formGroupQuantite = document.createElement("div");
     const labelQuantite = document.createElement("label");
     const quantite = document.createElement("input");
+    const small = document.createElement("small");
     const prix = document.createElement("div");
     const prixBrut = document.createElement("div");
     const BlockButon = document.createElement("div");
@@ -81,6 +77,7 @@ function displayProducts(response) {
     form.appendChild(formGroupQuantite);
     formGroupQuantite.appendChild(labelQuantite);
     formGroupQuantite.appendChild(quantite);
+    formGroupQuantite.appendChild(small);
     form.appendChild(prix);
     form.appendChild(prixBrut);
     form.appendChild(BlockButon)
@@ -102,44 +99,42 @@ function displayProducts(response) {
     });
 
 
-    // recuperation du formulaire
-    const formulaire = document.getElementById("formulaire");
-
-
     //ecoute de l'input quantite dans le formulaire
     quantite.addEventListener("change", () => {
-        saisiQuantite(quantite);
+        saisiQuantite(quantite); 
     });
 
-    // mise en place de la regex pour l'input du formulaire
+    // mise en place de la regex pour l'input quantite
     function saisiQuantite(quantite) {
-        let quantiteRegex = new RegExp('[1-9]');
+        let quantiteRegex = new RegExp('^[0-9]+$');
         // test de la regex
         let testQuantiteRegex = quantiteRegex.test(quantite.value);
+        console.log(testQuantiteRegex);
         if (testQuantiteRegex) {
-            quantite.classList.remove("bg-danger");
-            quantite.classList.add("bg-success");
+            small.innerHTML = "La quantité est valide";
+            small.style.color = "green";
+            return (1);
         } else {
-            quantite.classList.remove("bg-success");
-            quantite.classList.add("bg-danger");
+            small.innerHTML = "Veuillez entrer des nombres ! ";
+            small.style.color = "red";
+            return (0);
         }
     };
 
 
-
+    //création de l'événement pour l'ajout au panier
     ajoutPanier.addEventListener("click", (event) => {
-        //event.preventDefault();
+
+        //controle de la quantite pour valider l'ajout au panier et passer à la page suivante
+        if(!quantite.value.match('^[0-9]+$') || quantite.value.match('^[0]$')) {
+            event.preventDefault();
+            alert("veuillez entrer un nombre pour continuer !");
+        } 
         // déclarer l'object
         let object = {
             id: response._id,
             quantite: parseInt(quantite.value)
         };
-
-        if(quantite.value < 1) {
-            event.preventDefault();
-            alert("veuillez entrer un nombre pour continuer !");
-        } 
-            
         
         //création d'une variable contenant un tableau vide
         let tab = []
@@ -155,17 +150,15 @@ function displayProducts(response) {
             if (item.id === object.id) {
                 itemExist = true;
                 item.quantite += parseInt(object.quantite);
-                console.log(item, object.quantite)
+                console.log(item, object.quantite);
             }
         });
         if (!itemExist) {
-            tab.push(object)
+            tab.push(object);
         }
 
         //local storage sauvegarde le tableau sous forme de chaine
-        localStorage.setItem('Basket', JSON.stringify(tab))
-
-
+        localStorage.setItem('Basket', JSON.stringify(tab));
     });
 
 };
