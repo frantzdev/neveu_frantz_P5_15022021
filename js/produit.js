@@ -33,7 +33,7 @@ function displayProducts(response) {
     const BlockButon = document.createElement("div");
     const ajoutPanier = document.createElement("a");
 
-    titre.setAttribute("class", "text-center text-uppercase font-weight-bold font-italic border-dark shadow-lg col mt-3")
+    titre.setAttribute("class", "text-center text-uppercase font-weight-bold font-italic border-dark shadow-lg col my-5")
     titre.setAttribute("id", "nomProduit");
     contenue.setAttribute("class", "row justify-content-center my-5");
     photo.setAttribute("class", "col-md-8");
