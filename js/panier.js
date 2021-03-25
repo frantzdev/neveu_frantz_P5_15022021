@@ -85,8 +85,7 @@ for (let basketUnit of storedBasket) {
             //affiche le resultat du prix total du panier
             finalPrice.innerHTML = "Montant total TTC =  " + totalPriceAllItems / 100 + " ,00 €";
             //envoi des données en local storage pour récupération sur la page confirmation
-            localStorage.setItem("prixTotal", JSON.stringify(finalPrice.innerHTML));
-            localStorage.setItem("quantite", JSON.stringify(quantiteBasket.innerHTML))
+            sessionStorage.setItem("prixTotal", JSON.stringify(finalPrice.innerHTML));
 
         };
     }
@@ -103,6 +102,7 @@ const lastName = document.getElementById("lastName");
 const address = document.getElementById("address");
 const city = document.getElementById("city");
 const email = document.getElementById("email");
+
 
 
 // -----------------------validation firstName----------------------------
@@ -201,36 +201,13 @@ city.addEventListener("change", () => {
     validCity(city);
 });
 
-
-// -----------------------validation email----------------------------
-function validEmail(email) {
-    let emailRegex = new RegExp('^[a-zA-Z0-9-._]+[@]{1}[a-zA-Z0-9-._]+[.]{1}[a-z]{2,10}$', 'g');
-    let testemailRegex = emailRegex.test(email.value);
-    let small = email.nextElementSibling;
-    if (testemailRegex) {
-        small.innerHTML = "Email valide";
-        small.style.color = "green";
-        console.log("valide")
-        return true;
-    } else {
-        small.innerHTML = "Veuillez entrer un email valide";
-        small.style.color = "red";
-        console.log("non valide")
-        return false;
-    }
-};
-//ecoute des modifications sur input Email
-email.addEventListener("change", () => {
-    validEmail(email);
-});
-
 // --------------------------------POST--------------------------
 
 //ecouter la soumission du formulaire
 
 formulaireBasket.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (validFirstName(firstName), validLastName(lastName), validAddress(address), validCity(city), validEmail(email) != true) {
+    if (validFirstName(firstName), validLastName(lastName), validAddress(address), validCity(city)!= true) {
         event.preventDefault();
         alert("Désolé un champ du formulaire n'est pas valide");
     }
@@ -261,6 +238,9 @@ formulaireBasket.addEventListener('submit', (event) => {
         products
     };
     console.log(data);
+    //vide le panier
+    localStorage.clear();
+
 
     // Créer une requête de type "POST"
     let request = new XMLHttpRequest();

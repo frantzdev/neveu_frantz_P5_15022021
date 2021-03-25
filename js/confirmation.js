@@ -5,7 +5,7 @@
         console.log(contact)
         let products = JSON.parse(sessionStorage.getItem("products"));
         console.log(products)
-        let totalPrice = JSON.parse(localStorage.getItem("prixTotal"));
+        let totalPrice = JSON.parse(sessionStorage.getItem("prixTotal"));
 
         //structure HTML de la page
         const formConfirm = document.getElementById("formConfirm");
@@ -30,4 +30,4 @@
         formName.innerHTML = "Merci " + contact.firstName + " " + contact.lastName + ".";
         formCommand.innerHTML = "Votre commande n° : " + orderId + " est bien validée. " + totalPrice;
         formLocation.innerHTML = "La livraison se fera au " + contact.address + " à " + contact.city + ".";
-        formContact.innerHTML = "Un mail de confirmation vous a été envoyé à cette adresse : " + contact.email + ".";
+        formContact.innerHTML = "Un mail de confirmation vous a été envoyé à cette adresse : " + contact.email;
