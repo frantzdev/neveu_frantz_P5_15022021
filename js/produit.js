@@ -124,12 +124,12 @@ function displayProducts(response) {
 
     //création de l'événement pour l'ajout au panier
     ajoutPanier.addEventListener("click", (event) => {
-
         //controle de la quantite pour valider l'ajout au panier et passer à la page suivante
         if(!quantite.value.match('^[0-9]+$') || quantite.value.match('^[0]$')) {
             event.preventDefault();
             alert("veuillez entrer un nombre pour continuer !");
-        } 
+            localStorage.remove('Basket', item.id)
+        }
         // déclarer l'object
         let object = {
             id: response._id,
@@ -145,6 +145,7 @@ function displayProducts(response) {
         if (BasketStore !== null) {
             tab = BasketStore;
         }
+
         let itemExist = false;
         tab.forEach(item => {
             if (item.id === object.id) {
@@ -153,12 +154,14 @@ function displayProducts(response) {
                 console.log(item, object.quantite);
             }
         });
+        
         if (!itemExist) {
             tab.push(object);
         }
 
         //local storage sauvegarde le tableau sous forme de chaine
         localStorage.setItem('Basket', JSON.stringify(tab));
+
     });
 
 };
